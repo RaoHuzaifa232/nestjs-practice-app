@@ -102,15 +102,22 @@ export class HeroesService {
     // },
   ];
 
-  create(hero: Hero) {
-    this.heroes.push(hero);
-    return hero;
+  async create(hero: Hero) {
+    try {
+      const newHero = new this.heroModel(hero);
+      return await newHero.save();
+    }
+    catch (error) {
+      console.error("Error creating hero:", error);
+      throw error;
+    }
   }
 
   async findAll(): Promise<Hero[]> {
     try {
       return this.heroModel.find().exec();
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Error retrieving heroes:", error);
       throw error;
     }
