@@ -5,11 +5,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HeroesController } from './heroes/heroes.controller';
 import { HeroesService } from './heroes/heroes.service';
-import mongoose from 'mongoose';
 
 @Module({
   imports: [
-       ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
@@ -28,8 +27,7 @@ import mongoose from 'mongoose';
             bufferCommands: false, // Disable mongoose buffering
           });
           console.log(
-            `🟢MongoDB connected successfully Application is running on: http://localhost:${
-              process.env.PORT ?? 3000
+            `🟢MongoDB connected successfully Application is running on: http://localhost:${process.env.PORT ?? 3000
             }`
           );
         } catch (err) {
