@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateHeroDto } from './dto/create-hero.dto';
 import { HeroesService } from './heroes.service';
-import { Hero } from './interfaces/heroes.interface';
+import { Hero } from './schema/hero';
 
 @Controller('heroes')
 export class HeroesController {
@@ -13,8 +13,13 @@ export class HeroesController {
   }
 
   @Get('all')
-  findAll(): Array<Hero> {
-    return this.heroesService.findAll();
+  async findAll() {
+    const result = await this.heroesService.findAll();
+    return {
+        status: "Success",
+        heroes: result,
+        message: `Heroes retrieved successfully`,
+      };
   }
   @Get(':id')
   findOne(@Param(':id') id: string): string {
