@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { HeroesService } from './heroes.service';
 import { Hero } from './schema/hero';
 
@@ -33,9 +33,24 @@ export class HeroesController {
       message: `Heroes retrieved successfully`,
     };
   }
-  @Get(':id')
-  findOne(@Param(':id') id: string): string {
-    return `Hero details for the given ID ${id}`;
+  @Get('hero')
+  async findOne(@Query('id') id: string) {
+    if (!id) {
+      return {
+        status: "Error",
+        message: "ID query parameter is required",
+      };
+    }
+    try {
+      return await this.heroesService.findOne(id);
+    }
+    catch (error) {
+      return {
+        status: "Error",
+        message: "Failed to retrieve hero",
+        error: error.message,
+      };
+    }
   }
 
   @Delete(':id')
