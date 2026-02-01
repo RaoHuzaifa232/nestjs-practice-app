@@ -44,4 +44,18 @@ export class HeroesService {
       throw error;
     }
   }
+
+  async delete(id: string): Promise<Hero> {
+    try {
+      const result = await this.heroModel.findByIdAndDelete(id).exec();
+      if (!result) {
+        throw new Error('Hero not found');
+      }
+      return result;
+    }
+    catch (error) {
+      console.error(`Error deleting hero with ID ${id}:`, error);
+      throw error;
+    }
+  }
 }

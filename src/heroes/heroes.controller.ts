@@ -54,7 +54,21 @@ export class HeroesController {
   }
 
   @Delete(':id')
-  deleteHero(@Param(':id') id: string): string {
-    return `Hero with ID ${id} has been deleted`;
+  async deleteHero(@Param('id') id: string) {
+    try {
+      const result = await this.heroesService.delete(id);
+      return {
+        status: "Success",
+        hero: result,
+        message: `Hero with ID ${id} has been deleted`,
+      }
+    }
+    catch (error) {
+      return {
+        status: "Error",
+        message: "Failed to delete hero",
+        error: error.message,
+      };
+    }
   }
 }
