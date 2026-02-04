@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 import { HeroesController } from './heroes/heroes.controller';
 import { HeroesService } from './heroes/heroes.service';
 import { schemas } from './schemas';
@@ -39,11 +42,15 @@ import { UserService } from './user/user.service';
         return { uri };
       },
       inject: [ConfigService],
+
+    }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'secret123',
+      signOptions: { expiresIn: '15m' },
     }),
     MongooseModule.forFeature(schemas),
-
   ],
-  controllers: [AppController, HeroesController, UserController],
-  providers: [AppService, HeroesService, UserService],
+  controllers: [AppController, HeroesController, UserController, AuthController],
+  providers: [AppService, HeroesService, UserService, AuthService],
 })
 export class AppModule { }

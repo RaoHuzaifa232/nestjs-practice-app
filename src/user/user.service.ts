@@ -25,4 +25,14 @@ export class UserService {
             throw new Error(`Failed to create user: ${error.message}`);
         }
     }
+
+    async findByEmail(email: string) {
+        return this.userModel.findOne({ email });
+    }
+
+    async findByEmailWithPassword(email: string) {
+        return this.userModel
+            .findOne({ email })
+            .select('+password');
+    }
 }
