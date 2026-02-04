@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { HeroesController } from './heroes/heroes.controller';
 import { HeroesService } from './heroes/heroes.service';
 import { schemas } from './schemas';
+import { UserController } from './user/user.contoller';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [
@@ -38,10 +40,10 @@ import { schemas } from './schemas';
       },
       inject: [ConfigService],
     }),
-        MongooseModule.forFeature(schemas),
+    MongooseModule.forFeature(schemas),
 
   ],
-  controllers: [AppController, HeroesController],
-  providers: [AppService, HeroesService],
+  controllers: [AppController, HeroesController, UserController],
+  providers: [AppService, HeroesService, UserService],
 })
 export class AppModule { }

@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose/dist/common/mongoose.decorators';
 import { Model } from 'mongoose';
-import { User } from './schema/user';
+import { User, UserDocument } from './schema/user';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectModel(User.name)
-        private readonly userModel: Model<User>
+        private readonly userModel: Model<UserDocument>
     ) { }
 
-    async createUser(user: User) {
+    async createUser(user: { email: string, password: string }) {
         try {
             // Check if email already exists
             const existingUser = await this.userModel.findOne({ email: user.email });
