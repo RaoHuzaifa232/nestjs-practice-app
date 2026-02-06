@@ -8,8 +8,6 @@ export type UserDocument = User & Document;
 export class User {
     @Prop()
     name?: string;
-    @Prop()
-    birthDate?: string;
     @Prop({ required: true, unique: true })
     email: string;
     @Prop()

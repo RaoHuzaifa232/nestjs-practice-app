@@ -35,4 +35,12 @@ export class UserService {
             .findOne({ email })
             .select('+password');
     }
+
+    async updateUser(userId: string, updateData: Partial<User>) {
+        try {
+        return this.userModel.findByIdAndUpdate(userId, updateData, { new: true });
+        } catch (error) {
+            throw new Error(`Failed to update user: ${error.message}`);
+        }
+    }
 }
