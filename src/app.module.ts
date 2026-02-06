@@ -11,6 +11,7 @@ import { HeroesService } from './heroes/heroes.service';
 import { schemas } from './schemas';
 import { UserController } from './user/user.contoller';
 import { UserService } from './user/user.service';
+import { JwtStrategy } from './auth/jwt.strategy';
 
 @Module({
   imports: [
@@ -51,6 +52,6 @@ import { UserService } from './user/user.service';
     MongooseModule.forFeature(schemas),
   ],
   controllers: [AppController, HeroesController, UserController, AuthController],
-  providers: [AppService, HeroesService, UserService, AuthService],
+  providers: [AppService, HeroesService, UserService, AuthService, JwtStrategy],
 })
 export class AppModule { }
