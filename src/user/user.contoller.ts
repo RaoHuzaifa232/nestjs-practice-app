@@ -25,8 +25,26 @@ export class UserController {
     @Put('update')
     async updateUser(@Request() req, @Body(new ValidationPipe()) body: UpdateUserDto) {
         try {
+            // Check if JWT token user ID matches the user being updated
+            const tokenUserId = req.user.sub;
+            
+            if (!tokenUserId) {
+                return {
+                    status: "Error",
+                    message: "Unauthorized: Invalid token",
+                };
+            }
+
+            // Verify that the user ID in the request body matches the logged-in user
+            if (body.id && body.id !== tokenUserId) {
+                return {
+                    status: "Error",
+                    message: "Unauthorized: Cannot update another user's profile",
+                };
+            }
+
             // Only allow users to update their own profile
-            return this.userService.updateUser(req.user.sub, body);
+            return this.userService.updateUser(tokenUserId, body);
         }
         catch (error) {
             return {
