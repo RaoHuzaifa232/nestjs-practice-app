@@ -1,14 +1,15 @@
-import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Put, UseGuards, Request, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from './schema/user';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UserController {
     constructor(private userService: UserService) { }
 
     @Post('create')
-    async createUser(@Body() body: { email: string, password: string }) {
+    async createUser(@Body(new ValidationPipe()) body: CreateUserDto) {
         try {
             return this.userService.createUser(body);
         }
@@ -16,21 +17,21 @@ export class UserController {
             return {
                 status: "Error",
                 message: "Failed to create user",
-                error: error.message,
             };
         }
     }
+
     @UseGuards(AuthGuard('jwt'))
     @Put('update')
-    async updateUser(@Body() body: { userId: string, updateData: Partial<User> }) {
+    async updateUser(@Request() req, @Body(new ValidationPipe()) body: UpdateUserDto) {
         try {
-            return this.userService.updateUser(body.userId, body.updateData);
+            // Only allow users to update their own profile
+            return this.userService.updateUser(req.user.sub, body);
         }
         catch (error) {
             return {
                 status: "Error",
                 message: "Failed to update user",
-                error: error.message,
             };
         }
     }

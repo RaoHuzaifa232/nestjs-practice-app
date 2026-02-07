@@ -36,9 +36,13 @@ export class UserService {
             .select('+password');
     }
 
-    async updateUser(userId: string, updateData: Partial<User>) {
+    async updateUser(userId: string, updateData: any) {
         try {
-        return this.userModel.findByIdAndUpdate(userId, updateData, { new: true });
+            // Remove sensitive fields that should not be updated
+            delete updateData.password;
+            delete updateData.email;
+            
+            return this.userModel.findByIdAndUpdate(userId, updateData, { new: true }).select('-password');
         } catch (error) {
             throw new Error(`Failed to update user: ${error.message}`);
         }
