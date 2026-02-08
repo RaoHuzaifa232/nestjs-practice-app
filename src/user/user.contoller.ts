@@ -14,7 +14,7 @@ export class UserController {
             const user = await this.userService.createUser(body);
             return {
                 status: "Success",
-                data: user,
+                user: user,
                 message: "User created successfully",
             };
         }
