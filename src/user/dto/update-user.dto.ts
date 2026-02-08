@@ -1,15 +1,11 @@
-import { IsString, IsOptional, IsNumber, Min, Max } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateUserDto {
-
     id: number;
     @IsOptional()
     @IsString()
-    name?: string;
-
+    name: string;
     @IsOptional()
-    @IsNumber()
-    @Min(1)
-    @Max(150)
-    age?: number;
+    @IsString()
+    role: string;
 }

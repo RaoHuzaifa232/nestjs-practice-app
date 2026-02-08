@@ -11,7 +11,12 @@ export class UserController {
     @Post('create')
     async createUser(@Body(new ValidationPipe()) body: CreateUserDto) {
         try {
-            return this.userService.createUser(body);
+            const user = await this.userService.createUser(body);
+            return {
+                status: "Success",
+                data: user,
+                message: "User created successfully",
+            };
         }
         catch (error) {
             return {
@@ -27,7 +32,7 @@ export class UserController {
         try {
             // Check if JWT token user ID matches the user being updated
             const tokenUserId = req.user.sub;
-            
+
             if (!tokenUserId) {
                 return {
                     status: "Error",
