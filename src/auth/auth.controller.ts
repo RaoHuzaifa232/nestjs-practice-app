@@ -14,7 +14,7 @@ export class AuthController {
             const result = await this.authService.login(body.email, body.password);
             return {
                 status: "Success",
-                token: result,
+                data: result,
                 message: "Login successful",
             };
         } catch (error) {
