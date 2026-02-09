@@ -11,7 +11,12 @@ export class AuthController {
         @Body(new ValidationPipe()) body: LoginDto,
     ) {
         try {
-            return this.authService.login(body.email, body.password);
+            const result = await this.authService.login(body.email, body.password);
+            return {
+                status: "Success",
+                token: result,
+                message: "Login successful",
+            };
         } catch (error) {
             return {
                 status: "Error",

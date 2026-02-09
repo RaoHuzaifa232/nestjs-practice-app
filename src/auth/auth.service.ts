@@ -23,7 +23,7 @@ export class AuthService {
 
         return {
             access_token: this.jwtService.sign(payload, { expiresIn: '1h' }),
-            userId: user._id,
+            user: user,
         };
     }
 }

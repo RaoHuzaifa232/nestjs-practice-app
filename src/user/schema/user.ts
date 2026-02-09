@@ -17,6 +17,14 @@ export class User {
 }
 export const UserSchema = SchemaFactory.createForClass(User);
 
+// 🔐 Automatically exclude password from JSON responses
+UserSchema.set('toJSON', {
+    transform: (doc, ret: any) => {
+        delete ret.password;
+        return ret;
+    }
+});
+
 // 🔐 Hash password automatically
 UserSchema.pre<UserDocument>('save', async function () {
     if (!this.isModified('password')) return;
