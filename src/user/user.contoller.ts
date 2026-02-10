@@ -59,7 +59,11 @@ export class UserController {
         }
     }
 
-
+    /**
+     * Retrieve all users (admin only)
+     * @param req 
+     * @returns 
+     */
     @UseGuards(AuthGuard('jwt'))
     @Get('all')
     async getAllUsers(@Request() req) {
