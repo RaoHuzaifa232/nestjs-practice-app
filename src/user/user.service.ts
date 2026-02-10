@@ -47,4 +47,12 @@ export class UserService {
             throw new Error(`Failed to update user: ${error.message}`);
         }
     }
+
+    async getAllUsers() {
+        try {
+            return this.userModel.find().select('-password');
+        } catch (error) {
+            throw new Error(`Failed to retrieve users: ${error.message}`);
+        }
+    }
 }

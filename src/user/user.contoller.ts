@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Put, UseGuards, Request, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, Put, UseGuards, Request, ValidationPipe, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -55,6 +55,34 @@ export class UserController {
             return {
                 status: "Error",
                 message: "Failed to update user",
+            };
+        }
+    }
+
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('all')
+    async getAllUsers(@Request() req) {
+        try {
+            const role = req.user.role;
+            if (role !== 'admin') {
+                return {
+                    status: "Error",
+                    message: "Unauthorized: Admin access required",
+                };
+            
+            }
+            const users = await this.userService.getAllUsers();
+            return {
+                status: "Success",
+                users: users,
+                message: "Users retrieved successfully",
+            };
+        }
+        catch (error) {
+            return {
+                status: "Error",
+                message: "Failed to retrieve users",
             };
         }
     }
